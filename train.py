@@ -45,7 +45,7 @@ def train_one_epoch(data_loader, model, criterion, opt):
         prog.update(batch_idx+1, exact=[("Loss", losses.avg), ('Accuracy', accuracies.avg), ('clf_loss', clf_losses.avg), ('bb_loss', bb_losses.avg)])
 
 
-def train(epochs=5, resume=False, ckpt_path=None):
+def train(epochs=100, resume=False, ckpt_path=None):
     print('Loading training dataset .....')
     train_dataset = ChestXrayDataset('data/train/', 'data/tmp/train_labels.csv', transform=transform ,train=True, input_size=224)
     train_loader = data.DataLoader(train_dataset, batch_size=32, shuffle=True, num_workers=4)

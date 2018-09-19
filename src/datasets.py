@@ -4,7 +4,7 @@ from src.utils.utils import read_dicom
 
 class ChestXrayDataset(data.Dataset):
 
-    def __init__(self, root, list_file, transform=None, train=False, input_size=1024):
+    def __init__(self, root, list_file, transform=None, train=False, input_size=224):
         """
         Arguments:
             root: (str) images path
@@ -80,6 +80,41 @@ class ChestXrayDataset(data.Dataset):
     #         targets[i] = labels[i]
     #         loc_targets.append(boxes[i])
     #     return inputs, labels, torch.stack(loc_targets)
+
+
+class TestDataset(data.Dataset):
+
+    def __init__(self, root, list_file, transform=None, input_size=224):
+
+        self.root = root
+        self.transform = transform
+        self.input_size = input_size
+
+        self.fnames = []
+
+        with open(list_file) as f:
+            lines = f.readlines()
+            lines = lines[1:] #Removing the header
+            self.num_samples = len(lines)
+
+            for line in lines:
+                fn = line.split(',')[0] + '.dcm'
+                self.fnames.append(fn)
+
+    def __getitem__(self, idx):
+
+        fname = self.fnames[idx]
+        img = read_dicom(self.root+ fname)
+
+        img, _ = resize(img, torch.Tensor([0,0,0,0]), self.input_size)
+        if self.transform is not None:
+            img = self.transform(img)
+
+        return img
+
+
+    def __len__(self):
+        return self.num_samples
 
     
 
