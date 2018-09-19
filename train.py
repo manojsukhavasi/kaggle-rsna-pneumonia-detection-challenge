@@ -59,7 +59,7 @@ def train(epochs=100, resume=False, ckpt_path=None):
 
     model.cuda()
     criterion.cuda()
-    opt = optim.SGD(model.parameters(), lr = 1e-3, momentum=0.9, weight_decay=1e-4)
+    opt = optim.SGD(model.parameters(), lr = 1e-4, momentum=0.9, weight_decay=1e-4)
     best_val_loss = 1000
 
     if resume:

@@ -2,6 +2,7 @@ from src.imports import *
 from src.datasets import TestDataset
 from src.model.densenet import DenseNet
 from src.transforms import resize_to_original
+from src.utils.utils import clean_bb_boxes
 from evaluate import evaluate
 
 def submit(model):
@@ -14,7 +15,8 @@ def submit(model):
 
     preds = evaluate(test_loader, model)
     preds = resize_to_original(preds.cpu())
-    preds_string = [' '.join(str(j) for j in i) for i in preds.tolist()]
+    #preds = clean_bb_boxes(preds)
+    preds_string = [' '.join(str(j) for j in i) if i[0]>0.5 else '' for i in preds.tolist()]
     test_df = pd.read_csv('data/stage_1_sample_submission.csv')
     test_df['PredictionString'] = preds_string
     test_df.to_csv('data/tmp/submissions/submissions.csv', index=False)
