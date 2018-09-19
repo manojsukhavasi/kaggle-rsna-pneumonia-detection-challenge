@@ -1,6 +1,6 @@
 from src.imports import *
 from src.transforms import resize
-from src.utils import read_dicom
+from src.utils.utils import read_dicom
 
 class ChestXrayDataset(data.Dataset):
 

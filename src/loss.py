@@ -9,5 +9,6 @@ class CustomLoss(nn.Module):
 
         clf_loss = F.binary_cross_entropy(label_pred, label_target)
         bb_loss = F.mse_loss(bb_preds, bb_targets)
+        loss = (clf_loss + 0.001*bb_loss)
 
-        return (clf_loss + 0.0001*bb_loss)
+        return loss, clf_loss, bb_loss
